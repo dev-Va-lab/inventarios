@@ -1,0 +1,58 @@
+<script>
+// ... (código anterior)
+
+function loadMainContent(rol) {
+  var content = '<h1>Gestión de Inventario</h1>';
+  content += '<nav class="navbar navbar-expand-lg navbar-light bg-light">';
+  content += '<div class="container-fluid">';
+  content += '<ul class="navbar-nav">';
+  content += '<li class="nav-item"><a class="nav-link" href="#" onclick="loadProductos()">Productos</a></li>';
+  
+  if (rol === 'administrador' || rol === 'superadministrador') {
+    content += '<li class="nav-item"><a class="nav-link" href="#" onclick="loadMovimientos()">Movimientos</a></li>';
+    content += '<li class="nav-item"><a class="nav-link" href="#" onclick="loadCombos()">Combos</a></li>';
+  }
+  
+  if (rol === 'superadministrador') {
+    content += '<li class="nav-item"><a class="nav-link" href="#" onclick="loadUsuarios()">Usuarios</a></li>';
+  }
+  
+  content += '</ul></div></nav>';
+  content += '<div id="content-area"></div>';
+  
+  document.getElementById('main-content').innerHTML = content;
+  loadProductos(); // Carga la lista de productos por defecto
+}
+
+function loadProductos() {
+  google.script.run.withSuccessHandler(displayProductos).getProductos();
+}
+
+function displayProductos(productos) {
+  var content = '<h2>Lista de Productos</h2>';
+  content += '<table class="table table-striped">';
+  content += '<thead><tr><th>Código</th><th>Marca</th><th>Descripción</th><th>Sabor</th><th>Stock Total</th></tr></thead>';
+  content += '<tbody>';
+  
+  for (var i = 1; i < productos.length; i++) {
+    content += '<tr>';
+    content += '<td>' + productos[i][0] + '</td>';
+    content += '<td>' + productos[i][1] + '</td>';
+    content += '<td>' + productos[i][2] + '</td>';
+    content += '<td>' + productos[i][3] + '</td>';
+    content += '<td id="stock-' + productos[i][0] + '">Calculando...</td>';
+    content += '</tr>';
+    
+    // Calcular stock total
+    google.script.run.withSuccessHandler(function(stock) {
+      document.getElementById('stock-' + productos[i][0]).textContent = stock;
+    }).calcularStockTotal(productos[i][0]);
+  }
+  
+  content += '</tbody></table>';
+  document.getElementById('content-area').innerHTML = content;
+}
+
+// Añade más funciones para cargar otras secciones (movimientos, combos, usuarios)
+
+</script>
