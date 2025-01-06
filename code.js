@@ -2,6 +2,8 @@ function onOpen() {
   const ui = SpreadsheetApp.getUi();
   ui.createMenu('Opciones')
     .addItem('Deshacer movimiento', 'deshacerMovimiento')
+    .addItem('Actualizar y limpiar incremento', 'actualizarUltimoStockDesdeLocal')
+    .addItem('Registrar Venta', 'registrarVenta')
     .addToUi();
 }
 
