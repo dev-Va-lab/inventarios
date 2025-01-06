@@ -110,15 +110,9 @@ function configurarInterfazBusquedaUnica() {
       protection.setWarningOnly(true);
 
     }
-      
-    //else {
-      //hojaInterfaz.clear();
-    //}
-
     
   });
 
-  //crearHojaTransferencia()
   
 }
 
